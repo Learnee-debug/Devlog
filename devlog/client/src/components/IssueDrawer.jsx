@@ -289,20 +289,22 @@ export default function IssueDrawer({ issue, onClose, onUpdate, onDelete, member
           {/* Dates + Delete */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 24, paddingTop: 16, borderTop: '1px solid var(--color-border)' }}>
             <span style={{ fontSize: 11, color: 'var(--color-subtle)' }}>Created {formatDate(issue.createdAt)}</span>
-            <button
-              onClick={handleDelete}
-              style={{
-                background: 'none', border: 'none', cursor: 'pointer',
-                color: '#f87171', fontSize: 12, fontFamily: 'Inter, sans-serif',
-                display: 'flex', alignItems: 'center', gap: 4,
-                padding: '4px 8px', borderRadius: 4, transition: 'background 0.15s',
-              }}
-              onMouseEnter={e => e.currentTarget.style.background = 'rgba(239,68,68,0.1)'}
-              onMouseLeave={e => e.currentTarget.style.background = 'none'}
-            >
-              <span className="material-symbols-outlined ms-xs">delete</span>
-              Delete
-            </button>
+            {user?.role === 'admin' && (
+              <button
+                onClick={handleDelete}
+                style={{
+                  background: 'none', border: 'none', cursor: 'pointer',
+                  color: '#f87171', fontSize: 12, fontFamily: 'Inter, sans-serif',
+                  display: 'flex', alignItems: 'center', gap: 4,
+                  padding: '4px 8px', borderRadius: 4, transition: 'background 0.15s',
+                }}
+                onMouseEnter={e => e.currentTarget.style.background = 'rgba(239,68,68,0.1)'}
+                onMouseLeave={e => e.currentTarget.style.background = 'none'}
+              >
+                <span className="material-symbols-outlined ms-xs">delete</span>
+                Delete
+              </button>
+            )}
           </div>
         </div>
 

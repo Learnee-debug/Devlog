@@ -28,5 +28,11 @@ export function useProjects() {
     return data;
   };
 
-  return { projects, loading, error, createProject, refetch: fetch };
+  const addMember = async (projectId, userId) => {
+    const { data } = await api.post(`/projects/${projectId}/members`, { userId });
+    setProjects((prev) => prev.map((p) => (p._id === projectId ? data : p)));
+    return data;
+  };
+
+  return { projects, loading, error, createProject, addMember, refetch: fetch };
 }

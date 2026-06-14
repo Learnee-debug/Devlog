@@ -33,11 +33,10 @@ const issueSchema = new mongoose.Schema(
 );
 
 // Auto-generate issueId before validation
-issueSchema.pre('validate', async function (next) {
-  if (this.issueId) return next();
+issueSchema.pre('validate', async function () {
+  if (this.issueId) return;
   const count = await mongoose.model('Issue').countDocuments();
   this.issueId = `DL-${String(count + 1).padStart(3, '0')}`;
-  next();
 });
 
 module.exports = mongoose.model('Issue', issueSchema);

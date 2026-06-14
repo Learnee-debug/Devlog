@@ -6,6 +6,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import Board from './pages/Board';
+import Team from './pages/Team';
 
 function AppRoutes() {
   return (
@@ -18,7 +19,7 @@ function AppRoutes() {
         {/* Stubs for sidebar nav links */}
         <Route path="/projects"  element={<ProtectedRoute><Navigate to="/dashboard" replace /></ProtectedRoute>} />
         <Route path="/my-issues" element={<ProtectedRoute><Navigate to="/dashboard" replace /></ProtectedRoute>} />
-        <Route path="/team"      element={<ProtectedRoute><Navigate to="/dashboard" replace /></ProtectedRoute>} />
+        <Route path="/team"      element={<ProtectedRoute><Team /></ProtectedRoute>} />
         <Route path="*"          element={<Navigate to="/dashboard" replace />} />
       </Routes>
     </SocketProvider>

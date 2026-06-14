@@ -11,18 +11,14 @@ export default function IssueCard({ issue, index, onClick, isInProgress }) {
           {...provided.draggableProps}
           {...provided.dragHandleProps}
           onClick={() => onClick(issue)}
+          className="bg-surface rounded-[8px] p-[12px] cursor-pointer select-none"
           style={{
             ...provided.draggableProps.style,
-            background: 'var(--color-surface)',
             border: `1px solid ${
               snapshot.isDragging ? 'var(--color-primary)' :
               isInProgress ? 'rgba(108,99,255,0.45)' :
               'var(--color-border)'
             }`,
-            borderRadius: 8,
-            padding: 12,
-            cursor: 'pointer',
-            userSelect: 'none',
             transition: snapshot.isDragging ? 'none' : 'border-color 0.15s',
             boxShadow: isInProgress && !snapshot.isDragging
               ? '0 0 15px rgba(108,99,255,0.05)' : 'none',
@@ -30,10 +26,9 @@ export default function IssueCard({ issue, index, onClick, isInProgress }) {
               ? (provided.draggableProps.style?.transform ?? '') + ' rotate(1deg)'
               : provided.draggableProps.style?.transform,
           }}
-          className="group"
         >
           {/* Top row: issue ID + priority dot */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+          <div className="flex justify-between items-center mb-[8px]">
             <span className={`issue-id${isInProgress ? ' issue-id-active' : ''}`}>
               {issue.issueId}
             </span>
@@ -41,27 +36,19 @@ export default function IssueCard({ issue, index, onClick, isInProgress }) {
           </div>
 
           {/* Title */}
-          <p style={{
-            fontSize: 14, fontWeight: 500, color: 'var(--color-on-surface)',
-            lineHeight: 1.4, marginBottom: 12,
-            textDecoration: issue.status === 'done' ? 'line-through' : 'none',
-            opacity: issue.status === 'done' ? 0.6 : 1,
-          }}>
+          <p className={`text-[14px] font-medium text-on-surface leading-[1.4] mb-[12px]${issue.status === 'done' ? ' line-through opacity-60' : ''}`}>
             {issue.title}
           </p>
 
           {/* Bottom row */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 5, color: 'var(--color-subtle)' }}>
+          <div className="flex justify-between items-center">
+            <div className="flex items-center gap-[5px] text-subtle">
               <span className="material-symbols-outlined ms-xs">chat_bubble</span>
-              <span style={{ fontSize: 11 }}>{issue.comments?.length ?? 0}</span>
+              <span className="text-[11px]">{issue.comments?.length ?? 0}</span>
             </div>
             {issue.assignee
               ? <Avatar user={issue.assignee} size="xs" borderColor="var(--color-surface)" />
-              : <div style={{
-                  width: 20, height: 20, borderRadius: '50%',
-                  border: '1px dashed var(--color-border)',
-                }} />
+              : <div className="w-[20px] h-[20px] rounded-full border border-dashed border-border" />
             }
           </div>
         </div>

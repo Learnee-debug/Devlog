@@ -9,7 +9,7 @@ router.use(verifyToken);
 router.get('/', async (req, res) => {
   try {
     const projects = await Project.find({ members: req.user._id })
-      .populate('members', 'name email avatar')
+      .populate('members', 'name email avatar role')
       .populate('createdBy', 'name email avatar')
       .sort({ createdAt: -1 });
     res.json(projects);

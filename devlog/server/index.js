@@ -10,6 +10,7 @@ require('dotenv').config();
 const authRoutes = require('./routes/auth');
 const projectRoutes = require('./routes/projects');
 const issueRoutes = require('./routes/issues');
+const userRoutes = require('./routes/users');
 const { initSocket } = require('./socket/socket');
 
 const app = express();
@@ -38,6 +39,7 @@ app.use((req, _res, next) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/projects', projectRoutes);
 app.use('/api/issues', issueRoutes);
+app.use('/api/users', userRoutes);
 
 app.get('/api/health', (_req, res) => res.json({ status: 'ok' }));
 

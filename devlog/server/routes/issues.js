@@ -105,6 +105,9 @@ router.put('/:id', async (req, res) => {
 // DELETE /api/issues/:id
 router.delete('/:id', async (req, res) => {
   try {
+    if (req.user.role !== 'admin') {
+      return res.status(403).json({ message: 'Only admins can delete issues' });
+    }
     const issue = await Issue.findById(req.params.id);
     if (!issue) return res.status(404).json({ message: 'Issue not found' });
 

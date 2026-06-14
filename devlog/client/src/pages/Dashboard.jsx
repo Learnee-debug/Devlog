@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useProjects } from '../hooks/useProjects';
 import { useAuth } from '../context/AuthContext';
@@ -6,6 +6,7 @@ import Sidebar from '../components/Sidebar';
 import Avatar from '../components/Avatar';
 import NewIssueModal from '../components/NewIssueModal';
 import toast from 'react-hot-toast';
+import api from '../utils/api';
 
 const METRIC_ICONS = [
   { key: 'open',     label: 'Open Issues',        icon: 'warning',       color: '#ffb4ab', bg: 'rgba(255,180,171,0.1)' },
@@ -67,12 +68,34 @@ export default function Dashboard() {
   const navigate = useNavigate();
   const [showNewProject, setShowNewProject] = useState(false);
   const [showNewIssue, setShowNewIssue] = useState(false);
+  const [issuesByProject, setIssuesByProject] = useState({});
 
   const hour = new Date().getHours();
   const greeting = hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening';
-  const openCount = 0; // Could aggregate from issues
-  const inProgressCount = 0;
-  const resolvedCount = 0;
+
+  useEffect(() => {
+    if (!projects.length) return;
+    let cancelled = false;
+    Promise.all(
+      projects.map(p =>
+        api.get(`/issues?projectId=${p._id}`)
+          .then(r => ({ id: p._id, issues: r.data }))
+          .catch(() => ({ id: p._id, issues: [] }))
+      )
+    ).then(results => {
+      if (cancelled) return;
+      const map = {};
+      results.forEach(({ id, issues }) => { map[id] = issues; });
+      setIssuesByProject(map);
+    });
+    return () => { cancelled = true; };
+  }, [projects]);
+
+  const allIssues = Object.values(issuesByProject).flat();
+  const openCount = allIssues.filter(i => i.status === 'backlog').length;
+  const inProgressCount = allIssues.filter(i => i.status === 'in-progress').length;
+  const oneWeekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+  const resolvedCount = allIssues.filter(i => i.status === 'done' && new Date(i.updatedAt) >= oneWeekAgo).length;
   const metricValues = [openCount, inProgressCount, resolvedCount];
 
   return (
@@ -169,7 +192,10 @@ export default function Dashboard() {
             ) : (
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 16 }}>
                 {projects.map(p => {
-                  const pct = Math.round(Math.random() * 80 + 10); // placeholder until issues aggregated
+                  const pIssues = issuesByProject[p._id] || [];
+                  const pTotal = pIssues.length;
+                  const pDone = pIssues.filter(i => i.status === 'done').length;
+                  const pct = pTotal > 0 ? Math.round((pDone / pTotal) * 100) : 0;
                   return (
                     <div
                       key={p._id}
