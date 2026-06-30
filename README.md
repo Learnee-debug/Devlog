@@ -1,4 +1,3 @@
-
 <div align="center">
 
 # DevLog
@@ -22,7 +21,7 @@ Kanban boards, live updates, and role-based access — built on the MERN stack.
 
 > **Status:** Fully deployed and live — frontend on Vercel, API on Render, database on MongoDB Atlas. Register a new account or use the demo credentials below.
 >
-> Note: the API is on Render's free tier, which sleeps after 15 min of inactivity — the first request may take 30-50s to wake up.
+> The API runs on Render's free tier, which sleeps after 15 minutes of inactivity. The first request after a period of idle time may take 30–50 seconds to wake up — subsequent requests are instant.
 
 ## Overview
 
@@ -33,7 +32,7 @@ DevLog is a Linear/Jira-style issue tracker built to demonstrate a production-sh
 | | |
 |---|---|
 | 🔐 **Authentication** | JWT in httpOnly cookies, bcrypt-hashed passwords, register / login / logout / session restore |
-| 🗂️ **Kanban board** | Drag-and-drop issues across status columns (`@hello-pangea/dnd`) |
+| 🗂️ **Kanban board** | Drag-and-drop issues across status columns via `@hello-pangea/dnd` |
 | ⚡ **Real-time sync** | Socket.io broadcasts issue changes instantly to every connected client |
 | 🎯 **Issue tracking** | Create, edit, and triage issues with priority and status badges |
 | 🛡️ **Role-based access control** | `admin` / `developer` roles, protected routes, scoped permissions |
@@ -42,41 +41,35 @@ DevLog is a Linear/Jira-style issue tracker built to demonstrate a production-sh
 
 ## Tech Stack
 
-**Frontend**
-React 19 · Vite · React Router v7 · Tailwind CSS v4 · Axios · Socket.io-client · react-hot-toast · lucide-react
-
-**Backend**
-Node.js · Express 5 · MongoDB · Mongoose 9 · Socket.io · JWT (`jsonwebtoken`) · `bcryptjs` · `cookie-parser` · `cors`
-
-**Deployment**
-Vercel (frontend) · Render (API) · MongoDB Atlas (database)
+| Layer | Technologies |
+|---|---|
+| **Frontend** | React 19 · Vite · React Router v7 · Tailwind CSS v4 · Axios · Socket.io-client · react-hot-toast · lucide-react |
+| **Backend** | Node.js · Express 5 · MongoDB · Mongoose 9 · Socket.io · JWT · bcryptjs · cookie-parser · cors |
+| **Deployment** | Vercel (frontend) · Render (API) · MongoDB Atlas (database) |
 
 ## Architecture
 
+```mermaid
+flowchart LR
+    A["React + Vite\n(Vercel)"] -- "HTTPS · cookie-based JWT" --> B["Express 5 API\n(Render)"]
+    B -- "WebSocket · Socket.io" --> A
+    B --> C[("MongoDB Atlas")]
 ```
-┌─────────────────┐        HTTPS / cookie-based JWT        ┌──────────────────┐
-│   React + Vite   │ ───────────────────────────────────▶  │  Express 5 API   │
-│   (Vercel)        │ ◀───────────────────────────────────  │  (Render)        │
-└─────────────────┘        WebSocket (Socket.io)            └────────┬─────────┘
-                                                                       │
-                                                                       ▼
-                                                              ┌──────────────────┐
-                                                              │   MongoDB Atlas   │
-                                                              └──────────────────┘
-```
+
+## Project Structure
 
 ```
 devlog/
-├── client/   # React + Vite frontend
+├── client/              React + Vite frontend
 │   └── src/
-│       ├── pages/        # Dashboard, Board, Login, Register, Team
-│       ├── components/   # IssueCard, KanbanColumn, Sidebar, Navbar, ...
-│       └── context/      # Auth + Socket providers
-└── server/   # Express + MongoDB backend
-    ├── routes/           # auth, projects, issues, users
-    ├── models/           # User, Project, Issue
-    ├── middleware/        # JWT verification
-    └── socket/            # Real-time event handling
+│       ├── pages/       Dashboard, Board, Login, Register, Team
+│       ├── components/  IssueCard, KanbanColumn, Sidebar, Navbar...
+│       └── context/     Auth + Socket providers
+└── server/               Express + MongoDB backend
+    ├── routes/           auth, projects, issues, users
+    ├── models/           User, Project, Issue
+    ├── middleware/       JWT verification
+    └── socket/           Real-time event handling
 ```
 
 ## Getting Started
@@ -91,7 +84,6 @@ git clone https://github.com/Learnee-debug/Devlog.git
 cd Devlog/devlog
 npm run install:all
 ```
-(All project code lives under the `devlog/` directory in this repo.)
 
 ### 2. Configure environment variables
 
@@ -117,8 +109,8 @@ Creates two demo accounts:
 
 ### 4. Run locally
 ```bash
-npm run dev:server   # API → http://localhost:5000
-npm run dev:client   # App → http://localhost:5173
+npm run dev:server   # API   → http://localhost:5000
+npm run dev:client   # App   → http://localhost:5173
 ```
 
 ## API Reference
@@ -136,11 +128,13 @@ npm run dev:client   # App → http://localhost:5173
 
 ## Deployment
 
-- **Frontend** — [Vercel](https://client-tan-omega-94.vercel.app), auto-builds from `client/`
-- **Backend** — [Render](https://devlog-ndbq.onrender.com) (root: `server/`, build: `npm install`, start: `npm start`)
-- **Database** — MongoDB Atlas
+| Service | Provider | Notes |
+|---|---|---|
+| Frontend | [Vercel](https://client-tan-omega-94.vercel.app) | Auto-builds from `client/` |
+| Backend | [Render](https://devlog-ndbq.onrender.com) | Root: `server/` · Build: `npm install` · Start: `npm start` |
+| Database | MongoDB Atlas | — |
 
-Required backend environment variables in production: `MONGO_URI`, `JWT_SECRET`, `CLIENT_URL`, `NODE_ENV=production`.
+Required production environment variables for the backend: `MONGO_URI`, `JWT_SECRET`, `CLIENT_URL`, `NODE_ENV=production`.
 
 ## License
 
