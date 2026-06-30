@@ -20,7 +20,9 @@ Kanban boards, live updates, and role-based access — built on the MERN stack.
 
 ---
 
-> **Status:** Frontend is deployed and live on Vercel. Backend API deployment is in progress — the demo link will be fully interactive once the API is connected. See [Deployment](#deployment) below.
+> **Status:** Fully deployed and live — frontend on Vercel, API on Render, database on MongoDB Atlas. Register a new account or use the demo credentials below.
+>
+> Note: the API is on Render's free tier, which sleeps after 15 min of inactivity — the first request may take 30-50s to wake up.
 
 ## Overview
 
@@ -89,6 +91,7 @@ git clone https://github.com/Learnee-debug/Devlog.git
 cd Devlog/devlog
 npm run install:all
 ```
+(All project code lives under the `devlog/` directory in this repo.)
 
 ### 2. Configure environment variables
 
@@ -133,9 +136,9 @@ npm run dev:client   # App → http://localhost:5173
 
 ## Deployment
 
-- **Frontend** — deployed on [Vercel](https://client-tan-omega-94.vercel.app), auto-builds from `client/`
-- **Backend** — designed for [Render](https://render.com) (root: `server/`, build: `npm install`, start: `npm start`)
-- **Database** — [MongoDB Atlas](https://www.mongodb.com/atlas)
+- **Frontend** — [Vercel](https://client-tan-omega-94.vercel.app), auto-builds from `client/`
+- **Backend** — [Render](https://devlog-ndbq.onrender.com) (root: `server/`, build: `npm install`, start: `npm start`)
+- **Database** — MongoDB Atlas
 
 Required backend environment variables in production: `MONGO_URI`, `JWT_SECRET`, `CLIENT_URL`, `NODE_ENV=production`.
 
