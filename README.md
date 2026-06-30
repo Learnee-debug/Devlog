@@ -136,6 +136,39 @@ npm run dev:client   # App   → http://localhost:5173
 
 Required production environment variables for the backend: `MONGO_URI`, `JWT_SECRET`, `CLIENT_URL`, `NODE_ENV=production`.
 
+## Security Notes
+
+- Passwords are never stored in plaintext — hashed with `bcrypt` (cost factor 12) before persisting
+- Auth tokens live in `httpOnly`, `Secure`, `SameSite=Lax` cookies — never exposed to client-side JS, immune to XSS token theft
+- All cross-origin requests are locked to a single allow-listed `CLIENT_URL`, not a wildcard
+
+## Roadmap
+
+- [ ] File attachments on issues
+- [ ] Comment threads per issue
+- [ ] Email notifications on assignment
+- [ ] Activity audit log per project
+
+## Contributing
+
+Issues and pull requests are welcome. For larger changes, please open an issue first to discuss what you'd like to change.
+
+```bash
+git checkout -b feature/your-feature
+git commit -m "Add your feature"
+git push origin feature/your-feature
+```
+
 ## License
 
-ISC
+Licensed under the [ISC License](https://opensource.org/licenses/ISC).
+
+---
+
+<div align="center">
+
+Built by **[Shubham Padkonde](https://github.com/Learnee-debug)**
+
+⭐ If this project helped you, consider giving it a star.
+
+</div>
